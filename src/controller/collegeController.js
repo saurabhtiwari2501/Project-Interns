@@ -6,3 +6,5 @@ const createCollege=async function(req,res){
 }
 
 module.exports.createCollege=createCollege
+
+//hey priyanka
