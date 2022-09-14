@@ -1,6 +1,6 @@
 const isValidMobileNumber=function(number){
     // return /^(\+\d{1,3}[- ]?)?\d{10}$/.test(number)
-    return /^[6-9]\d{9}$/.test(number)
+    return /^[+][9][1][6-9]\d{9}$/.test(number)
 }
 
 const isNameUpper=function(name){
