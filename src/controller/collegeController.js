@@ -1,7 +1,20 @@
 const collegeModel = require('../model/collegeModel')
 const internModel = require('../model/internModel')
+const v=require('../validation/validation')
+
+
 const createCollege = async function (req, res) {
     try {
+        let {name,fullName,logolink}=req.body
+        if(!v.isValidSpace(name)) return res.status(400).send({status:false,msg:'name is required'})
+        //if(!v.isNameUpper(name)) return res.status(400).send({status:false,msg:'Name Allowed Only In Upper Case AND Without Space'})
+        if(!v.isValidSpace(fullName)) return res.status(400).send({status:false,msg:'fullName is required'})
+        if(!v.isValidName(fullName)) return res.status(400).send({status:false,msg:'Allowed Only In Alphabetic Form'})
+
+        //if(!v.isValidSpace(logolink)) return res.status(400).send({status:false,msg:'logolink is required'})
+        
+        
+        
         let collegeData = await collegeModel.create(req.body)
         res.status(201).send({ status: true, msg: 'College Data Created Successfully', collegeData })
     }
@@ -12,7 +25,7 @@ const createCollege = async function (req, res) {
 
 const collegeDetails = async function (req, res) {
     try {
-        let { collegeName } = req.query
+        let {collegeName } = req.query
 
         let collegeData = await collegeModel.findOne({ name: collegeName })
 
