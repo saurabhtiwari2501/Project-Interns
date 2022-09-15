@@ -6,8 +6,9 @@ const createIntern = async function (req, res) {
     try {
         let requestBody=req.body
         if(!v.isvalidRequest(requestBody)) return res.status(400).send({status:false,msg:'body data is required'})
-        
-        let {name,email,mobile,collegeName} = requestBody
+        if(v.isvalidRequest(req.query)) return res.status(400).send({ status: false, msg: 'Query Data Not Needed' })
+
+        let {name,email,mobile,collegeName,isDeleted} = requestBody
 
         if(!v.isValidSpace(name)) return res.status(400).send({status:false,msg:'name is required'})
         if(!v.isValidName(name)) return res.status(400).send({status:false,msg:'name is required in valid format'})
@@ -31,6 +32,7 @@ const createIntern = async function (req, res) {
         if(!Data) return res.status(400).send({status:false,msg:'Enter Valid collegeName'})
         let collegeId=Data._id
         let DataBlock={name,email,mobile,collegeId}
+        if (isDeleted) return res.status(400).send({ status: false, msg: 'Data Creation Failed' })
         let internData = await internModel.create(DataBlock)
         res.status(201).send({ status: true, msg: "Intern Data Created Successfully", internData })
     }
