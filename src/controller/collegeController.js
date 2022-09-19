@@ -10,6 +10,7 @@ const createCollege = async function (req, res) {
         if(v.isvalidRequest(req.query)) return res.status(400).send({ status: false, msg: 'Query Data Not Needed' })
 
         let { name, fullName, logoLink, isDeleted } = requestBody
+        
         if (!v.isValidSpace(name)) return res.status(400).send({ status: false, msg: 'name is required' })
         if (!v.isNameLower(name)) return res.status(400).send({ status: false, msg: 'name lower case or - allowed only' })
 
@@ -29,24 +30,32 @@ const createCollege = async function (req, res) {
         console.log(err)
         res.status(500).send({ status: false, message: err.msg })
     }
-}
+};
 
-const collegeDetails = async function (req, res) {
-    try {
-        let query = req.query
-        let { collegeName } = query
-        if (!v.isvalidRequest(collegeName)) return res.status(400).send({ status: false, msg: 'collegeName query is required' })
-        
-        let collegeData = await collegeModel.findOne({ name: collegeName })
-        if(!collegeData) return res.status(400).send({ status: false, msg: 'collegeName not exist' })
-        
-        let internData = await internModel.find({ collegeId: collegeData._id })
-        let Data = { name: collegeData.name, fullName: collegeData.fullName, logolink: collegeData.logoLink, interns: internData }
-        res.status(200).send({ Data: Data })
-    }
-    catch (error) {
-        console.log(error)
-        res.status(500).send({ status: false, msg: error.msg })
+let collegeDetails = async function(req,res){
+    try{
+        if(req.query.collegeName){
+            let college = await collegeModel.find({name:req.query.collegeName,isDeleted:false})
+            if(!college){
+                res.status(404).send({status:false,msg:"college not found in query"})
+            }else{
+                let collegeData = {
+                    name: college.name,
+                    fullName:college.fullName,
+                    logoLink: college.logoLink
+                }
+                let intern = await internModel.find({collegeId:college._id, isDeleted:false},'-collegeId -isDeleted -createdAt-updatedAt').sort({createdAt:-1})
+                if(intern){
+                   collegeData.intern = intern
+                }
+                res.status(201).send({status:true,data:collegeData})
+            }
+        }else{
+            res.status(400).send({status:false,msg:"collegeName must be present in query"})
+
+        }
+    }catch(error){
+        res.status(500).send({status:false,msg:error.massage})
     }
 }
 module.exports.createCollege = createCollege

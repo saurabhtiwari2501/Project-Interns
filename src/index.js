@@ -6,10 +6,10 @@ const app = express()
 
 app.use(express.json())
 
-mongoose.connect('mongodb+srv://prince9871:BZjeaWxY1uTLCefz@cluster0.pelsn1m.mongodb.net/group47Database', {
+mongoose.connect('mongodb+srv://Saurabh-FunctionUp:SAURABHtiwari2501@cluster0.ppnw4vg.mongodb.net/PROJECT-INTERNDATA', {
     useNewUrlParser: true
 })
-    .then(() => console.log("MongoDB Running"))
+    .then(() => console.log("MongoDB Running is on terminal"))
     .catch(err => console.log(err))
 
 app.use('/', route)

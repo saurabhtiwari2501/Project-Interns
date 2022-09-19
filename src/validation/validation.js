@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')
+
 const isValidMobileNumber=function(number){
     return /^[6-9]\d{9}$/.test(number)
 }
@@ -10,6 +11,7 @@ const isNameLower=function(name){
 const isValidLink=function(link){
     return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(link)
 }
+
 const isValidSpace = function (value) {
     if (typeof value === 'undefined' || value === null) return false
     if (typeof value === 'string' && value.trim().length === 0) return false
@@ -37,6 +39,7 @@ const isValidObjectId = function (objectId) {
 const isValidEmail=function(email){
     return /^\S+@\S+\.\S+$/.test(email)
 }
+
 module.exports.isValidMobileNumber=isValidMobileNumber
 module.exports.isNameLower=isNameLower
 module.exports.isValidSpace=isValidSpace
